@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"strconv"
 	"testing"
 	"time"
 
@@ -133,5 +134,56 @@ func TestSQLWithParameter(t *testing.T) {
 		fmt.Println(username, "has logged in successfully")
 	} else {
 		fmt.Println("Failed to login")
+	}
+}
+
+func TestAutoIncrement(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+
+	email := "nagachi@mail.co.id"
+	comment := "Selamat datang yagesya"
+
+	query := "INSERT INTO comment (email, comment) values(?,?)"
+	result, err := db.ExecContext(ctx, query, email, comment)
+	if err != nil {
+		panic(err)
+	}
+	insertId, err := result.LastInsertId()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("success insert new comment with insertId", insertId)
+}
+
+func TestPrepStatement(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+
+	query := "INSERT INTO comment (email, comment) VALUES (?,?)"
+	stmt, err := db.PrepareContext(ctx, query)
+	if err != nil {
+		panic(err)
+	}
+	defer stmt.Close()
+
+	for i := 0; i < 10; i++ {
+		email := "nagachi" + strconv.Itoa(i) + "@mail.com"
+		comment := "comment" + strconv.Itoa(i)
+
+		res, err := stmt.ExecContext(ctx, email, comment)
+		if err != nil {
+			panic(err)
+		}
+		id, err := res.LastInsertId()
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("comment id:", id)
+
 	}
 }
