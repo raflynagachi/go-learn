@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    {{with .Name}}
+    <h3>Firstname {{.firstname}}</h3>
+    <h3>Lastname {{.lastname}}</h3>
+    {{else}}
+    <h3>No Name</h3>
+    {{end}}
+</body>
+</html>

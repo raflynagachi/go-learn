@@ -1,0 +1,18 @@
+{{define "layout"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Template Layout</title>
+</head>
+<body>
+{{template "header.go.html" .}}
+    <h3>Hell {{.Name}}</h3>
+{{template "footer.go.html"}}
+</body>
+</html>
+{{end}}
+
+{{define "test"}}
+<h1>Hello</h1>
+{{end}}

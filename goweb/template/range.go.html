@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    {{range $index,$element := .score}}
+        <h3>Matkul: {{$index}} => {{$element}}</h3>
+    {{else}}
+        <h3>DONE</h3>
+    {{end}}
+</body>
+</html>
