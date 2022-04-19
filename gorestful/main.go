@@ -5,6 +5,7 @@ import (
 
 	"gorestful/app"
 	"gorestful/controller"
+	"gorestful/exception"
 	"gorestful/helper"
 	"gorestful/repository"
 	"gorestful/service"
@@ -33,6 +34,8 @@ func main() {
 		Addr:    "localhost:3000",
 		Handler: router,
 	}
+
+	router.PanicHandler = exception.ErrorHandler
 
 	err := server.ListenAndServe()
 	helper.PanicIfError(err)
