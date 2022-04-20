@@ -7,6 +7,7 @@ import (
 	"gorestful/controller"
 	"gorestful/exception"
 	"gorestful/helper"
+	"gorestful/middleware"
 	"gorestful/repository"
 	"gorestful/service"
 	"net/http"
@@ -32,7 +33,7 @@ func main() {
 
 	server := http.Server{
 		Addr:    "localhost:3000",
-		Handler: router,
+		Handler: middleware.NewAuthMiddleware(router),
 	}
 
 	router.PanicHandler = exception.ErrorHandler
