@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"net/http"
 	"urlshort"
+	"urlshort/helper"
 )
 
 func main() {
-	mux := defaultMux()
+	mux := helper.DefaultMux()
 
 	// Build the MapHandler using the mux as the fallback
 	pathsToUrls := map[string]string{
@@ -43,14 +44,4 @@ func main() {
 
 	fmt.Println("Starting the server on :8080")
 	http.ListenAndServe(":8080", jsonHandler)
-}
-
-func defaultMux() *http.ServeMux {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", hello)
-	return mux
-}
-
-func hello(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Hello, world!")
 }
