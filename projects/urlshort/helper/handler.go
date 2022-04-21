@@ -1,6 +1,7 @@
 package helper
 
 import (
+	"encoding/json"
 	"urlshort/model"
 
 	"github.com/go-yaml/yaml"
@@ -8,6 +9,13 @@ import (
 
 func ParseYaml(yml []byte, pathUrls *[]model.PathToUrl) {
 	err := yaml.Unmarshal(yml, pathUrls)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func ParseJson(jsonBytes []byte, pathUrls *[]model.PathToUrl) {
+	err := json.Unmarshal(jsonBytes, pathUrls)
 	if err != nil {
 		panic(err)
 	}
