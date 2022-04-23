@@ -1,9 +1,17 @@
 package main
 
-import "task-manager/cmd"
+import (
+	"task-manager/cmd"
+	"task-manager/database"
+)
 
 func main() {
-	err := cmd.RootCmd.Execute()
+	err := database.OpenDB("task.db")
+	if err != nil {
+		panic(err)
+	}
+
+	err = cmd.RootCmd.Execute()
 	if err != nil {
 		panic(err)
 	}
