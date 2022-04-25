@@ -1,13 +1,12 @@
-package test
+package simple
 
 import (
 	"fmt"
-	"gorestful/simple"
 	"testing"
 )
 
 func TestSimpleService(t *testing.T) {
-	simpleService, err := simple.InitializeService()
+	simpleService, err := InitializeService()
 	if err != nil {
 		fmt.Println(err)
 	} else {
