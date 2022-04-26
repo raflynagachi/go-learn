@@ -1,16 +1,19 @@
 package simple
 
 import (
-	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-func TestSimpleService(t *testing.T) {
-	simpleService, err := InitializeService()
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Println("Success create service")
-	}
-	fmt.Println(simpleService)
+func TestSimpleServiceError(t *testing.T) {
+	simpleService, err := InitializeService(true)
+	assert.NotNil(t, err)
+	assert.Nil(t, simpleService)
+}
+
+func TestSimpleServiceSuccess(t *testing.T) {
+	simplService, err := InitializeService(false)
+	assert.Nil(t, err)
+	assert.NotNil(t, simplService)
 }
