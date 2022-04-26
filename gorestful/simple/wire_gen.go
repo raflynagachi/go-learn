@@ -8,6 +8,8 @@ package simple
 
 import (
 	"github.com/google/wire"
+	"io"
+	"os"
 )
 
 // Injectors from injector.go:
@@ -38,10 +40,14 @@ func InitializeFooBarService() *FooBarService {
 }
 
 func InitializeHelloService() *HelloService {
-	sayHelloImpl := NewSayHelloImpl()
-	helloService := NewHelloService(sayHelloImpl)
+	sayHello := _wireSayHelloImplValue
+	helloService := NewHelloService(sayHello)
 	return helloService
 }
+
+var (
+	_wireSayHelloImplValue = NewSayHelloImpl()
+)
 
 func InitializeFooBar() *FooBar {
 	foo := NewFoo()
@@ -52,6 +58,31 @@ func InitializeFooBar() *FooBar {
 	}
 	return fooBar
 }
+
+func InitializeFooBarUsingValue() *FooBar {
+	foo := _wireFooValue
+	bar := _wireBarValue
+	fooBar := &FooBar{
+		Foo: foo,
+		Bar: bar,
+	}
+	return fooBar
+}
+
+var (
+	_wireFooValue = &Foo{}
+	_wireBarValue = &Bar{}
+)
+
+// binding interface value
+func InitializeInterfaceValue() io.Reader {
+	reader := _wireFileValue
+	return reader
+}
+
+var (
+	_wireFileValue = os.Stdin
+)
 
 // injector.go:
 
@@ -65,8 +96,15 @@ var helloSet = wire.NewSet(
 	NewSayHelloImpl, wire.Bind(new(SayHello), new(*SayHelloImpl)),
 )
 
+var helloInterfaceValue = wire.InterfaceValue(
+	new(SayHello), NewSayHelloImpl(),
+)
+
 // struct provider
 var fooBarSet = wire.NewSet(
 	NewFoo,
 	NewBar,
 )
+
+// binding value
+var fooBarSetValue = wire.NewSet(wire.Value(&Foo{}), wire.Value(&Bar{}))
