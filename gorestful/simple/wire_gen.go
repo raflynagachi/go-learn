@@ -40,14 +40,10 @@ func InitializeFooBarService() *FooBarService {
 }
 
 func InitializeHelloService() *HelloService {
-	sayHello := _wireSayHelloImplValue
-	helloService := NewHelloService(sayHello)
+	sayHelloImpl := NewSayHelloImpl()
+	helloService := NewHelloService(sayHelloImpl)
 	return helloService
 }
-
-var (
-	_wireSayHelloImplValue = NewSayHelloImpl()
-)
 
 func InitializeFooBar() *FooBar {
 	foo := NewFoo()
@@ -84,6 +80,13 @@ var (
 	_wireFileValue = os.Stdin
 )
 
+// struct field provider
+func InitializeConfiguration() *Configuration {
+	application := NewApplication()
+	configuration := application.Configuration
+	return configuration
+}
+
 // injector.go:
 
 // provider set
@@ -94,10 +97,6 @@ var barSet = wire.NewSet(NewBarRepository, NewBarService)
 // binding interface
 var helloSet = wire.NewSet(
 	NewSayHelloImpl, wire.Bind(new(SayHello), new(*SayHelloImpl)),
-)
-
-var helloInterfaceValue = wire.InterfaceValue(
-	new(SayHello), NewSayHelloImpl(),
 )
 
 // struct provider

@@ -75,3 +75,12 @@ func InitializeInterfaceValue() io.Reader {
 	wire.Build(wire.InterfaceValue(new(io.Reader), os.Stdin))
 	return nil
 }
+
+// struct field provider
+func InitializeConfiguration() *Configuration {
+	wire.Build(
+		NewApplication,
+		wire.FieldsOf(new(*Application), "Configuration"),
+	)
+	return nil
+}
