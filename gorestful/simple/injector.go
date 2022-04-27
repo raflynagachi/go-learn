@@ -84,3 +84,9 @@ func InitializeConfiguration() *Configuration {
 	)
 	return nil
 }
+
+// cleanup connection
+func InitializeConnection(name string) (*Connection, func(), error) {
+	wire.Build(NewConnection, NewFile)
+	return nil, nil, nil
+}

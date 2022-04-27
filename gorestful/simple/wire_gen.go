@@ -87,6 +87,23 @@ func InitializeConfiguration() *Configuration {
 	return configuration
 }
 
+// cleanup connection
+func InitializeConnection(name string) (*Connection, func(), error) {
+	file, cleanup, err := NewFile(name)
+	if err != nil {
+		return nil, nil, err
+	}
+	connection, cleanup2, err := NewConnection(file)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	return connection, func() {
+		cleanup2()
+		cleanup()
+	}, nil
+}
+
 // injector.go:
 
 // provider set
