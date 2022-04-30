@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/joho/godotenv"
 	"github.com/shomali11/slacker"
 )
 
@@ -23,10 +24,20 @@ func printCommandEvents(analyticsChannel <-chan *slacker.CommandEvent) {
 }
 
 func main() {
-	os.Setenv("SLACK_BOT_TOKEN", "xoxb-3486741035872-3460098029845-DwY4f0OYMTOj4ttbW7jXvEgC")
-	os.Setenv("SLACK_APP_TOKEN", "xapp-1-A03DP9Z29EG-3456351293158-38c65cf0b702b32bf19ef062bd4eb0838c7508c960417b1928581bbf23db3840")
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatal("error loading .env file")
+	}
+	slack_bot_token, ok := os.LookupEnv("SLACK_BOT_TOKEN")
+	if !ok {
+		fmt.Println("error: could not find SLACK_BOT_TOKEN")
+	}
+	slack_app_token, ok := os.LookupEnv("SLACK_APP_TOKEN")
+	if !ok {
+		fmt.Println("error: could not find SLACK_APP_TOKEN")
+	}
 
-	bot := slacker.NewClient(os.Getenv("SLACK_BOT_TOKEN"), os.Getenv("SLACK_APP_TOKEN"))
+	bot := slacker.NewClient(slack_bot_token, slack_app_token)
 
 	go printCommandEvents(bot.CommandEvents())
 
@@ -48,7 +59,7 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	err := bot.Listen(ctx)
+	err = bot.Listen(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
