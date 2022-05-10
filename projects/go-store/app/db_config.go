@@ -1,0 +1,45 @@
+package app
+
+import (
+	"fmt"
+
+	"github.com/raflynagachi/go-store/helpers"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+)
+
+type DBConfig struct {
+	DB     string
+	DBHost string
+	DBPort string
+	DBUser string
+	DBPass string
+	DBname string
+}
+
+func (dbConfig *DBConfig) setupEnv() {
+	dbConfig.DB = helpers.GetEnv("DATABASE", "mysql")
+	dbConfig.DBHost = helpers.GetEnv("DATABASE_HOST", "localhost")
+	dbConfig.DBPort = helpers.GetEnv("DATABASE_PORT", "3306")
+	dbConfig.DBUser = helpers.GetEnv("DATABASE_USERNAME", "admin")
+	dbConfig.DBPass = helpers.GetEnv("DATABASE_PASSWORD", "password")
+	dbConfig.DBname = helpers.GetEnv("DATABASE_NAME", "go-store")
+
+}
+
+func (s *Server) InitializeDB(dbConfig DBConfig) {
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		dbConfig.DBUser,
+		dbConfig.DBPass,
+		dbConfig.DBHost,
+		dbConfig.DBPort,
+		dbConfig.DBname,
+	)
+
+	var err error
+	s.DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic("Failed on connecting to the database server")
+	}
+	fmt.Printf("Connected to %s at %s:%s\n", dbConfig.DB, dbConfig.DBHost, dbConfig.DBPort)
+}
