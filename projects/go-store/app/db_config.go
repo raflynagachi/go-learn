@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/raflynagachi/go-store/helpers"
 	"gorm.io/driver/mysql"
@@ -57,4 +58,15 @@ func (s *Server) InitializeDB(dbConfig DBConfig) {
 		panic("Failed on connecting to the database server")
 	}
 	fmt.Printf("Connected to %s at %s:%s\n", dbConfig.DB, dbConfig.DBHost, dbConfig.DBPort)
+}
+
+func (s *Server) MigrateDB() {
+	for _, model := range RegisterModels() {
+		err := s.DB.Debug().AutoMigrate(model.Model)
+		if err != nil {
+			log.Fatal("err")
+		}
+	}
+
+	fmt.Println("Database migrated successfully")
 }

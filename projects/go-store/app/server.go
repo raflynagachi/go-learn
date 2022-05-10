@@ -16,9 +16,9 @@ type Server struct {
 
 func (s *Server) Initialize(appConfig AppConfig, dbConfig DBConfig) {
 	fmt.Printf("Welcome to %s\n", appConfig.AppName)
-	s.Router = mux.NewRouter()
 
 	s.InitializeDB(dbConfig)
+	s.MigrateDB()
 	s.InitializeRoutes()
 }
 
