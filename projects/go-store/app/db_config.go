@@ -5,6 +5,7 @@ import (
 
 	"github.com/raflynagachi/go-store/helpers"
 	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -28,16 +29,30 @@ func (dbConfig *DBConfig) setupEnv() {
 }
 
 func (s *Server) InitializeDB(dbConfig DBConfig) {
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		dbConfig.DBUser,
-		dbConfig.DBPass,
-		dbConfig.DBHost,
-		dbConfig.DBPort,
-		dbConfig.DBname,
-	)
-
+	var dsn string
 	var err error
-	s.DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+
+	if dbConfig.DB == "mysql" {
+		dsn = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+			dbConfig.DBUser,
+			dbConfig.DBPass,
+			dbConfig.DBHost,
+			dbConfig.DBPort,
+			dbConfig.DBname,
+		)
+		s.DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+
+	} else if dbConfig.DB == "postgres" {
+		dsn = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai",
+			dbConfig.DBHost,
+			dbConfig.DBUser,
+			dbConfig.DBPass,
+			dbConfig.DBname,
+			dbConfig.DBPort,
+		)
+		s.DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	}
+
 	if err != nil {
 		panic("Failed on connecting to the database server")
 	}
