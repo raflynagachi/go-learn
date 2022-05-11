@@ -1,10 +1,6 @@
 package app
 
-import (
-	"github.com/raflynagachi/go-store/models/order"
-	"github.com/raflynagachi/go-store/models/product"
-	"github.com/raflynagachi/go-store/models/user"
-)
+import "github.com/raflynagachi/go-store/models"
 
 type Model struct {
 	Model interface{}
@@ -12,16 +8,16 @@ type Model struct {
 
 func RegisterModels() []Model {
 	return []Model{
-		{Model: user.User{}},
-		{Model: user.Address{}},
-		{Model: product.Product{}},
-		{Model: product.ProductImage{}},
-		{Model: product.Section{}},
-		{Model: product.Category{}},
-		{Model: order.Order{}},
-		{Model: order.OrderItem{}},
-		{Model: order.OrderCustomer{}},
-		{Model: order.Payment{}},
-		{Model: order.Shipment{}},
+		{Model: models.User{}},
+		{Model: models.Address{}},
+		{Model: models.Product{}},
+		{Model: models.ProductImage{}},
+		{Model: models.Section{}},
+		{Model: models.Category{}},
+		{Model: models.Order{}},
+		{Model: models.OrderItem{}},
+		{Model: models.OrderCustomer{}},
+		{Model: models.Payment{}},
+		{Model: models.Shipment{}},
 	}
 }

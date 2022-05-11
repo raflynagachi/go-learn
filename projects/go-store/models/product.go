@@ -1,9 +1,8 @@
-package product
+package models
 
 import (
 	"time"
 
-	"github.com/raflynagachi/go-store/models/user"
 	"github.com/shopspring/decimal"
 	"gorm.io/gorm"
 )
@@ -12,7 +11,7 @@ type Product struct {
 	ID               string     `gorm:"size:36;not null;uniqueIndex;primaryKey"`
 	ParentID         string     `gorm:"size:36;index"`
 	Categories       []Category `gorm:"many2many:product_categories"`
-	User             user.User
+	User             User
 	UserID           string          `gorm:"size:36;index"`
 	Sku              string          `gorm:"size:100;index"`
 	Name             string          `gorm:"size:255"`

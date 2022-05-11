@@ -1,9 +1,8 @@
-package order
+package models
 
 import (
 	"time"
 
-	"github.com/raflynagachi/go-store/models/product"
 	"github.com/shopspring/decimal"
 )
 
@@ -11,7 +10,7 @@ type OrderItem struct {
 	ID              string `gorm:"size:36;not null;index;primaryKey"`
 	Order           Order
 	OrderID         string `gorm:"size:36;index"`
-	Product         product.Product
+	Product         Product
 	ProductID       string `gorm:"size:36;index"`
 	Qty             int
 	BasePrice       decimal.Decimal `gorm:"type:decimal(16,2)"`

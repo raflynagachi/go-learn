@@ -1,16 +1,15 @@
-package order
+package models
 
 import (
 	"time"
 
-	"github.com/raflynagachi/go-store/models/user"
 	"github.com/shopspring/decimal"
 	"gorm.io/gorm"
 )
 
 type Order struct {
 	ID                  string `gorm:"size:36;not null;index;primaryKey"`
-	User                user.User
+	User                User
 	UserID              string `gorm:"size:36;index"`
 	OrderItems          []OrderItem
 	OrderCustomer       *OrderCustomer
