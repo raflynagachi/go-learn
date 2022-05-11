@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/raflynagachi/go-store/database/seeders"
 	"github.com/raflynagachi/go-store/helpers"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
@@ -69,4 +70,12 @@ func (s *Server) MigrateDB() {
 	}
 
 	fmt.Println("Database migrated successfully")
+}
+
+func (s *Server) SeedDB() {
+	err := seeders.DBSeed(s.DB)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("Database seeded successfully")
 }

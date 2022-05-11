@@ -19,6 +19,7 @@ func (s *Server) Initialize(appConfig AppConfig, dbConfig DBConfig) {
 
 	s.InitializeDB(dbConfig)
 	s.MigrateDB()
+	s.SeedDB()
 	s.InitializeRoutes()
 }
 
