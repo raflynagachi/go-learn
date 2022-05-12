@@ -61,15 +61,27 @@ func (s *Server) InitializeDB(dbConfig DBConfig) {
 	fmt.Printf("Connected to %s at %s:%s\n", dbConfig.DB, dbConfig.DBHost, dbConfig.DBPort)
 }
 
-func (s *Server) MigrateDB() {
+func (s *Server) MigrateDB(fresh bool) {
 	for _, model := range RegisterModels() {
+		// migrate fresh
+		if fresh {
+			err := s.DB.Debug().Migrator().DropTable(model.Model)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
+
 		err := s.DB.Debug().AutoMigrate(model.Model)
 		if err != nil {
-			log.Fatal("err")
+			log.Fatal(err)
 		}
 	}
 
-	fmt.Println("Database migrated successfully")
+	if fresh {
+		fmt.Println("Database fresh migrated successfully")
+	} else {
+		fmt.Println("Database migrated successfully")
+	}
 }
 
 func (s *Server) SeedDB() {

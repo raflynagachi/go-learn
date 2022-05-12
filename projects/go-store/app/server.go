@@ -1,6 +1,7 @@
 package app
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -18,8 +19,11 @@ func (s *Server) Initialize(appConfig AppConfig, dbConfig DBConfig) {
 	fmt.Printf("Welcome to %s\n", appConfig.AppName)
 
 	s.InitializeDB(dbConfig)
-	s.MigrateDB()
-	s.SeedDB()
+
+	flag.Parse()
+	arg := flag.Arg(0)
+	s.InitializeCommands(arg, appConfig, dbConfig)
+
 	s.InitializeRoutes()
 }
 
@@ -37,5 +41,4 @@ func Run() {
 	dbConfig.setupEnv()
 
 	server.Initialize(appConfig, dbConfig)
-	server.Run(":" + appConfig.AppPort)
 }
