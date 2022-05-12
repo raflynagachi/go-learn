@@ -32,12 +32,17 @@ func (s *Server) InitializeCommands(arg string, appConfig AppConfig, dbConfig DB
 					return nil
 				},
 			},
+			{
+				Name: "start",
+				Action: func(ctx *cli.Context) error {
+					s.Run(":" + appConfig.AppPort)
+					return nil
+				},
+			},
 		}
 		err := cmdApp.Run(os.Args)
 		if err != nil {
 			log.Fatal(err)
 		}
-	} else {
-		s.Run(":" + appConfig.AppPort)
 	}
 }
