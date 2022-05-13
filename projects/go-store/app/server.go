@@ -19,11 +19,12 @@ func (s *Server) Initialize(appConfig AppConfig, dbConfig DBConfig) {
 	fmt.Printf("Welcome to %s\n", appConfig.AppName)
 
 	s.InitializeDB(dbConfig)
-	s.InitializeRoutes()
 
 	flag.Parse()
 	arg := flag.Arg(0)
 	s.InitializeCommands(arg, appConfig, dbConfig)
+
+	s.InitializeRoutes()
 }
 
 func (s *Server) Run(addr string) {
