@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  none:
+    build:
+      context: .
+      args:
+        - GOPATH=/go
+        - GO111MODULE=on
+  api:
+    build: api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  db:
+    build: db
+    ports:
+      - "6379:6379"
+    volumes:
+      - .data:/data
