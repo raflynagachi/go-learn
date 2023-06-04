@@ -12,7 +12,7 @@ VALUES ($1, $2, $3) RETURNING *;
 
 SELECT * FROM transfers WHERE id = $1 LIMIT 1;
 
--- name: ListTransfers :one
+-- name: ListTransfers :many
 
 SELECT *
 FROM transfers
