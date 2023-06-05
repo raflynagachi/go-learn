@@ -2,6 +2,7 @@ package db_test
 
 import (
 	"context"
+	"math"
 	"testing"
 
 	db "github.com/raflynagachi/simplebank/db/sqlc"
@@ -36,6 +37,8 @@ func TestTransferTx(t *testing.T) {
 	}
 
 	// check results
+	existed := make(map[int]bool)
+
 	for i := 0; i < n; i++ {
 		err := <-errs
 		require.NoError(t, err)
@@ -80,6 +83,35 @@ func TestTransferTx(t *testing.T) {
 		_, err = store.GetEntry(context.Background(), toEntry.ID)
 		require.NoError(t, err)
 
-		// TODO: check account's balance
+		// check accounts
+		fromAcc := result.FromAccount
+		require.NotEmpty(t, fromAcc)
+		assert.Equal(t, acc1.ID, fromAcc.ID)
+
+		toAcc := result.ToAccount
+		require.NotEmpty(t, toAcc)
+		assert.Equal(t, acc2.ID, toAcc.ID)
+
+		// check account's balance
+		diff1 := acc1.Balance - fromAcc.Balance
+		diff2 := toAcc.Balance - acc2.Balance
+		assert.Equal(t, diff1, diff2)
+		assert.True(t, diff1 > 0)
+		assert.True(t, math.Mod(diff1, amount) == 0)
+
+		k := int(diff1 / amount)
+		assert.True(t, k >= 1 && k <= n)
+		assert.NotContains(t, existed, k)
+		existed[k] = true
 	}
+
+	// check the final updated database
+	updatedAcc1, err := testQueries.GetAccount(context.Background(), acc1.ID)
+	require.NoError(t, err)
+
+	updatedAcc2, err := testQueries.GetAccount(context.Background(), acc2.ID)
+	require.NoError(t, err)
+
+	assert.Equal(t, acc1.Balance-float64(n)*amount, updatedAcc1.Balance)
+	assert.Equal(t, acc2.Balance+float64(n)*amount, updatedAcc2.Balance)
 }
