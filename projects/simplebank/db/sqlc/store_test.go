@@ -115,3 +115,49 @@ func TestTransferTx(t *testing.T) {
 	assert.Equal(t, acc1.Balance-float64(n)*amount, updatedAcc1.Balance)
 	assert.Equal(t, acc2.Balance+float64(n)*amount, updatedAcc2.Balance)
 }
+
+func TestTransferTxDeadlock(t *testing.T) {
+	store := db.NewStore(conn)
+
+	acc1 := createRandomAccount(t)
+	acc2 := createRandomAccount(t)
+
+	// run n concurrent transfer transactions
+	n := 10
+	amount := float64(10)
+	errs := make(chan error)
+
+	for i := 0; i < n; i++ {
+		fromAccountID := acc1.ID
+		toAccountID := acc2.ID
+		if i%2 == 0 {
+			fromAccountID = acc2.ID
+			toAccountID = acc1.ID
+		}
+
+		go func() {
+			_, err := store.TransferTx(context.Background(), db.TransferTxParams{
+				FromAccountID: fromAccountID,
+				ToAccountID:   toAccountID,
+				Amount:        amount,
+			})
+
+			errs <- err
+		}()
+	}
+
+	for i := 0; i < n; i++ {
+		err := <-errs
+		require.NoError(t, err)
+	}
+
+	// check the final updated database
+	updatedAcc1, err := testQueries.GetAccount(context.Background(), acc1.ID)
+	require.NoError(t, err)
+
+	updatedAcc2, err := testQueries.GetAccount(context.Background(), acc2.ID)
+	require.NoError(t, err)
+
+	assert.Equal(t, acc1.Balance, updatedAcc1.Balance)
+	assert.Equal(t, acc2.Balance, updatedAcc2.Balance)
+}

@@ -83,7 +83,7 @@ func TestUpdateAccount(t *testing.T) {
 
 	assert.Equal(t, acc.ID, acc2.ID)
 	assert.Equal(t, acc.Owner, acc2.Owner)
-	assert.Equal(t, arg.Balance, acc2.Balance)
+	assert.Equal(t, arg.Balance+acc.Balance, acc2.Balance)
 	assert.Equal(t, acc.Currency, acc2.Currency)
 	assert.WithinDuration(t, acc.CreatedAt, acc2.CreatedAt, time.Second)
 }
