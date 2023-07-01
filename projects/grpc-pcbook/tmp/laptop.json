@@ -1,0 +1,62 @@
+{
+  "id": "7d40dd82-91f8-46c1-afdb-6aba3821def5",
+  "brand": "Lenovo",
+  "name": "Thinkpad P53",
+  "cpu": {
+    "brand": "Intel",
+    "name": "Core i9-9980HK",
+    "number_cores": 3,
+    "number_threads": 7,
+    "min_ghz": 3.4522389278721004,
+    "max_ghz": 4.5392780479892725
+  },
+  "ram": {
+    "value": "27",
+    "unit": "GIGABYTE"
+  },
+  "gpus": [
+    {
+      "brand": "Nvidia",
+      "name": "GTX 1660-Ti",
+      "min_ghz": 1.2261961615092585,
+      "max_ghz": 1.6830584135263322,
+      "memory": {
+        "value": "3",
+        "unit": "GIGABYTE"
+      }
+    }
+  ],
+  "storages": [
+    {
+      "driver": "SSD",
+      "memory": {
+        "value": "752",
+        "unit": "GIGABYTE"
+      }
+    },
+    {
+      "driver": "HDD",
+      "memory": {
+        "value": "1",
+        "unit": "TERABYTE"
+      }
+    }
+  ],
+  "screen": {
+    "size_inch": 13.403047,
+    "resolution": {
+      "width": 1948,
+      "height": 1096
+    },
+    "panel": "OLED",
+    "multitouch": false
+  },
+  "keyboard": {
+    "layout": "QWERTZ",
+    "backlight": false
+  },
+  "weight_kg": 2.7850138203387327,
+  "price_usd": 3048.61517661324,
+  "release_year": 2018,
+  "updated_at": "2023-07-01T10:35:21.821840930Z"
+}

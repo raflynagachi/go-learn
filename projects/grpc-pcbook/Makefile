@@ -5,7 +5,10 @@ clean:
 	rm -r pb
 	mkdir pb
 
+test:
+	go test ./... -cover -v
+
 run:
 	go run main.go
 
-.PHONY: gen clean run
+.PHONY: gen clean run test
