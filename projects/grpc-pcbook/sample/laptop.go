@@ -1,23 +1,23 @@
 package sample
 
 import (
-	example_pb "pcbook/pb/example.pb"
+	"pcbook/pb"
 
 	"github.com/golang/protobuf/ptypes"
 )
 
 // NewKeyboard returns a new sample keyboard
-func NewKeyboard() *example_pb.Keyboard {
-	keyboard := &example_pb.Keyboard{
-		Layout:    randomKeyboardLayout(),
-		Backlight: randomBool(),
+func NewKeyboard() *pb.Keyboard {
+	keyboard := &pb.Keyboard{
+		Layout:  randomKeyboardLayout(),
+		Backlit: randomBool(),
 	}
 
 	return keyboard
 }
 
 // NewCPU returns a new sample CPU
-func NewCPU() *example_pb.CPU {
+func NewCPU() *pb.CPU {
 	brand := randomCPUBrand()
 	name := randomCPUName(brand)
 
@@ -27,7 +27,7 @@ func NewCPU() *example_pb.CPU {
 	minGhz := randomFloat64(2.0, 3.5)
 	maxGhz := randomFloat64(minGhz, 5.0)
 
-	cpu := &example_pb.CPU{
+	cpu := &pb.CPU{
 		Brand:         brand,
 		Name:          name,
 		NumberCores:   uint32(numberCores),
@@ -40,7 +40,7 @@ func NewCPU() *example_pb.CPU {
 }
 
 // NewGPU returns a new sample GPU
-func NewGPU() *example_pb.GPU {
+func NewGPU() *pb.GPU {
 	brand := randomGPUBrand()
 	name := randomGPUName(brand)
 
@@ -48,14 +48,14 @@ func NewGPU() *example_pb.GPU {
 	maxGhz := randomFloat64(minGhz, 2.0)
 	memGB := randomInt(2, 6)
 
-	gpu := &example_pb.GPU{
+	gpu := &pb.GPU{
 		Brand:  brand,
 		Name:   name,
 		MinGhz: minGhz,
 		MaxGhz: maxGhz,
-		Memory: &example_pb.Memory{
+		Memory: &pb.Memory{
 			Value: uint64(memGB),
-			Unit:  example_pb.Memory_GIGABYTE,
+			Unit:  pb.Memory_GIGABYTE,
 		},
 	}
 
@@ -63,26 +63,26 @@ func NewGPU() *example_pb.GPU {
 }
 
 // NewRAM returns a new sample RAM
-func NewRAM() *example_pb.Memory {
+func NewRAM() *pb.Memory {
 	memGB := randomInt(4, 64)
 
-	ram := &example_pb.Memory{
+	ram := &pb.Memory{
 		Value: uint64(memGB),
-		Unit:  example_pb.Memory_GIGABYTE,
+		Unit:  pb.Memory_GIGABYTE,
 	}
 
 	return ram
 }
 
 // NewSSD returns a new sample SSD
-func NewSSD() *example_pb.Storage {
+func NewSSD() *pb.Storage {
 	memGB := randomInt(128, 1024)
 
-	ssd := &example_pb.Storage{
-		Driver: example_pb.Storage_SSD,
-		Memory: &example_pb.Memory{
+	ssd := &pb.Storage{
+		Driver: pb.Storage_SSD,
+		Memory: &pb.Memory{
 			Value: uint64(memGB),
-			Unit:  example_pb.Memory_GIGABYTE,
+			Unit:  pb.Memory_GIGABYTE,
 		},
 	}
 
@@ -90,14 +90,14 @@ func NewSSD() *example_pb.Storage {
 }
 
 // NewHDD returns a new sample HDD
-func NewHDD() *example_pb.Storage {
+func NewHDD() *pb.Storage {
 	memTB := randomInt(1, 6)
 
-	hdd := &example_pb.Storage{
-		Driver: example_pb.Storage_HDD,
-		Memory: &example_pb.Memory{
+	hdd := &pb.Storage{
+		Driver: pb.Storage_HDD,
+		Memory: &pb.Memory{
 			Value: uint64(memTB),
-			Unit:  example_pb.Memory_TERABYTE,
+			Unit:  pb.Memory_TERABYTE,
 		},
 	}
 
@@ -105,8 +105,8 @@ func NewHDD() *example_pb.Storage {
 }
 
 // NewScreen returns a new sample Screen
-func NewScreen() *example_pb.Screen {
-	screen := &example_pb.Screen{
+func NewScreen() *pb.Screen {
+	screen := &pb.Screen{
 		SizeInch:   randomFloat32(13, 17),
 		Resolution: randomScreenResolution(),
 		Panel:      randomScreenPanel(),
@@ -117,21 +117,21 @@ func NewScreen() *example_pb.Screen {
 }
 
 // NewLaptop returns a new sample Laptop
-func NewLaptop() *example_pb.Laptop {
+func NewLaptop() *pb.Laptop {
 	brand := randomLaptopBrand()
 	name := randomLaptopName(brand)
 
-	laptop := &example_pb.Laptop{
+	laptop := &pb.Laptop{
 		Id:       randomID(),
 		Brand:    brand,
 		Name:     name,
 		Cpu:      NewCPU(),
 		Ram:      NewRAM(),
-		Gpus:     []*example_pb.GPU{NewGPU()},
-		Storages: []*example_pb.Storage{NewSSD(), NewHDD()},
+		Gpus:     []*pb.GPU{NewGPU()},
+		Storages: []*pb.Storage{NewSSD(), NewHDD()},
 		Screen:   NewScreen(),
 		Keyboard: NewKeyboard(),
-		Weight: &example_pb.Laptop_WeightKg{
+		Weight: &pb.Laptop_WeightKg{
 			WeightKg: randomFloat64(1.0, 3.0),
 		},
 		PriceUsd:    randomFloat64(1500, 3500),

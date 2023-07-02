@@ -1,7 +1,7 @@
 package serializer_test
 
 import (
-	example_pb "pcbook/pb/example.pb"
+	"pcbook/pb"
 	"pcbook/sample"
 	"pcbook/serializer"
 	"testing"
@@ -24,7 +24,7 @@ func TestFileSerializer(t *testing.T) {
 	err = serializer.WriteProtobufToJSONFile(laptop1, jsonFile)
 	require.NoError(t, err)
 
-	laptop2 := &example_pb.Laptop{}
+	laptop2 := &pb.Laptop{}
 	err = serializer.ReadProtobufFromBinaryFile(binaryFile, laptop2)
 	require.NoError(t, err)
 

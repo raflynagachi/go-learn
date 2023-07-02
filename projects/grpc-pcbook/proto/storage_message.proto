@@ -1,7 +1,11 @@
 syntax = "proto3";
-package example.pb;
 
-option go_package = "example.pb";
+package techschool.pcbook;
+
+option go_package = ".;pb";
+option java_package = "com.gitlab.techschool.pcbook.pb";
+option java_multiple_files = true;
+
 import "memory_message.proto";
 
 message Storage {
@@ -10,6 +14,7 @@ message Storage {
     HDD = 1;
     SSD = 2;
   }
+
   Driver driver = 1;
   Memory memory = 2;
 }
